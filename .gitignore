@@ -1,0 +1,9 @@
+# 编译产物
+*.o
+*.exe
+
+# 运行 / 临时文件
+run_output.txt
+
+# π 计算程序产物（运行 Main.exe 可重新生成）
+*_Bits.md

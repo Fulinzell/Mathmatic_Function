@@ -86,6 +86,15 @@ std::string Decimal_To_Binary(const std::string &num,
 pip install PyQt5        # 首次使用需安装
 python binary_gui.py     # 启动界面：输入数字 → 二进制结果 + 彩色格子
 ```
+
+勾选「C++ 引擎 (Main.exe)」后，界面通过 **stdout 管道**（subprocess）调用 C++ 版
+`Decimal_To_Binary` 计算，Python 负责解析与可视化；引擎输出为 UTF-8 编码的
+`BINARY=<结果>` 行。命令行也可直接调用：
+
+```bash
+Main.exe 0.5          # 输出 BINARY=0.1
+Main.exe 3.14159 20   # 输出 BINARY=11.00100100001111110011…1（第二参数为小数位数）
+```
 ```
 
 ## 🔬 算法说明

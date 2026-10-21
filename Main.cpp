@@ -1,8 +1,27 @@
 #include "Head.h"
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
+    // ==================== 命令行模式：供 Python 等外部程序调用 ====================
+    // 用法：Main.exe <十进制数> [小数位数]
+    // 输出：标准输出打印 "BINARY=<结果>"（异常时打印 "ERROR=<信息>" 到 stderr 并返回 1）
+    if (argc > 1)
+    {
+        try
+        {
+            unsigned int fracBits = (argc > 2) ? static_cast<unsigned int>(std::stoul(argv[2])) : 52;
+            std::cout << "BINARY=" << Decimal_To_Binary(argv[1], fracBits) << std::endl;
+            return 0;
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "ERROR=" << e.what() << std::endl;
+            return 1;
+        }
+    }
+
+#if 0
     /*  案例一：--------------------------------------------------------------------------二维点-------------------------------------------------------------------------------*/
 
     // 创建一个二维点的实例
@@ -109,7 +128,8 @@ int main()
     std::cout << "[Info] 各 π 计算结果已写入当前目录下的 *_Bits.md 文件 (setPiOutputDirectory 可指定目录)" << std::endl;
 
     /* 案例六：----------------------------------------------十进制 → 二进制（字符串拼接通用算法）------------------------------------------------------*/
-
+#endif
+#if 0
     // 整数
     std::cout << "Decimal_To_Binary(\"25\")      = " << Decimal_To_Binary("25") << std::endl;   // 11001
     std::cout << "Decimal_To_Binary(\"-25\")     = " << Decimal_To_Binary("-25") << std::endl;  // -11001
@@ -118,6 +138,10 @@ int main()
     // 小数（无法精确表示，按精度上限截断并标记）
     std::cout << "Decimal_To_Binary(\"0.1\")     = " << Decimal_To_Binary("0.1") << std::endl;   // 0.0001100110011…
     std::cout << "Decimal_To_Binary(\"3.14159\") = " << Decimal_To_Binary("3.14159", 20) << std::endl;
+#endif
+
+    // ===== 当前最小工作链路：计算 0.5 的二进制表示（Python 联调起点） =====
+    std::cout << "BINARY=" << Decimal_To_Binary("0.5") << std::endl;
 
     return 0;
 }

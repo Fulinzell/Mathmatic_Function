@@ -15,6 +15,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtWidgets import (
     QApplication,
+    QCheckBox,
     QGridLayout,
     QHBoxLayout,
     QLabel,
@@ -126,6 +127,10 @@ class BinaryWindow(QMainWindow):
         self.convert_button.setFixedWidth(120)
         self.convert_button.clicked.connect(self.convert)
         input_row.addWidget(self.convert_button)
+
+        self.cpp_check = QCheckBox("C++ 引擎 (Main.exe)")
+        self.cpp_check.setToolTip("勾选后由 C++ 库的 Decimal_To_Binary 计算（通过 stdout 管道通信）")
+        input_row.addWidget(self.cpp_check)
         layout.addLayout(input_row)
 
         # ---- 结果文本 ----
@@ -167,18 +172,53 @@ class BinaryWindow(QMainWindow):
         self.input_edit.setFocus()
 
     # ------------------------------------------------------------------
+    def convert_via_cpp(self, text: str, precision: int) -> str:
+        """调用 C++ 引擎 Main.exe（stdout 管道：exe 打印 BINARY=..., Python 捕获解析）。"""
+        import subprocess
+        from pathlib import Path
+
+        exe = Path(__file__).resolve().parent / "Main.exe"
+        if not exe.exists():
+            raise RuntimeError(f"未找到 C++ 引擎：{exe}\n请先执行 mingw32-make 编译 Main.exe")
+        proc = subprocess.run(
+            [str(exe), text, str(precision)],
+            timeout=30,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            # Main.exe 输出 UTF-8 字节（含 "…" 省略标记），必须显式指定解码，
+            # 否则 Windows 下按 GBK 解码会抛 UnicodeDecodeError
+        )
+        out = proc.stdout.decode("utf-8", errors="replace")
+        err = proc.stderr.decode("utf-8", errors="replace")
+        if proc.returncode != 0:
+            detail = err.strip() or out.strip() or f"退出码 {proc.returncode}"
+            raise RuntimeError(f"C++ 引擎报错：{detail}")
+        for line in out.splitlines():
+            if line.startswith("BINARY="):
+                return line[len("BINARY="):]
+        raise RuntimeError(f"C++ 引擎输出无法解析：{out.strip()!r}")
+
+    # ------------------------------------------------------------------
     def convert(self):
         text = self.input_edit.text()
         try:
-            binary, truncated = decimal_to_binary(text, self.precision_spin.value())
-        except ValueError as exc:
+            if self.cpp_check.isChecked():
+                # C++ 引擎：截断标记由结果末尾的 "…1" 判断
+                binary = self.convert_via_cpp(text, self.precision_spin.value())
+                truncated = binary.endswith("…1")
+            else:
+                binary, truncated = decimal_to_binary(text, self.precision_spin.value())
+        except (ValueError, RuntimeError) as exc:
             QMessageBox.warning(self, "输入错误", str(exc))
             return
 
         self.result_edit.setText(binary)
         self.status_label.setText(
-            "注意：小数部分已按精度截断，未精确表示（末位之后仍有非零位）。" if truncated else ""
+            "计算引擎：C++ (Main.exe)｜" if self.cpp_check.isChecked() else ""
         )
+        if truncated:
+            self.status_label.setText(
+                self.status_label.text() + "注意：小数部分已按精度截断，未精确表示（末位之后仍有非零位）。"
+            )
         self.fill_grid(binary, truncated)
 
     # ------------------------------------------------------------------

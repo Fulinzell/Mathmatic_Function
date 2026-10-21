@@ -1,5 +1,4 @@
-#ifndef __MATHMATIC_DATATYPE_H__
-#define __MATHMATIC_DATATYPE_H__
+#pragma once
 
 #include <vector> // 引入vector头文件
 
@@ -37,5 +36,3 @@ typedef struct Matrix3D
 
 // 定义一个3x3矩阵
 typedef std::vector<std::vector<double>> MATRIX_3D;
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __HEAD_H__
-#define __HEAD_H__
+#pragma once
 
 #include <iostream>
 #include <iomanip> // 包含 std::fixed 和 std::setprecision
@@ -28,6 +27,3 @@
 #include "Matrix.h"
 #include "Pi.h"
 
-using namespace std;
-
-#endif // __HEAD_H__

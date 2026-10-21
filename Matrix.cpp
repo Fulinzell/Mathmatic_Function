@@ -1,4 +1,5 @@
 #include "Head.h"
+using namespace std;
 #include <string>
 
 // 计算三阶行列式的函数

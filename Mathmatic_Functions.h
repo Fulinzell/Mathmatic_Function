@@ -1,5 +1,4 @@
-#ifndef __MATHMATIC_FUNCTIONS_H__
-#define __MATHMATIC_FUNCTIONS_H__
+#pragma once
 
 #include "Head.h"
 
@@ -37,5 +36,3 @@ double Chudnovsky_Pi(unsigned int terms);
 // @param digits 期望的有效数字位数 (1 ~ 100)
 // @param terms  累加项数; 传 0 表示按 digits/14 + 2 自动选择
 std::string Chudnovsky_Pi(unsigned int digits, unsigned int terms);
-
-#endif

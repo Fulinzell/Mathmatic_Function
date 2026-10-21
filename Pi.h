@@ -1,5 +1,4 @@
-#ifndef __PI_H__
-#define __PI_H__
+#pragma once
 
 #include <string>
 
@@ -36,4 +35,3 @@ void setPiOutputDirectory(const std::string &dir);
 std::string savePiResultToFile(const std::string &filename, const std::string &funcName,
                                const std::string &paramDesc, const std::string &result);
 
-#endif // __PI_H__

@@ -4,11 +4,11 @@
 #include "Mathmatic_DataType.h"
 
 // 计算三阶行列式的函数
-double calculate_Determinant(const MATRIX3D &Matrix);
+double determinant(const Matrix3D &Matrix);
 
-double calculate_Determinant(const MATRIX_3D &matrix);
+double determinant(const Matrix3DVec &matrix);
 
 // 输出矩阵
-void print_Matrix(const MATRIX_3D &matrix);
+void printMatrix(const Matrix3DVec &matrix);
 
 #endif // __MATRIX_H__

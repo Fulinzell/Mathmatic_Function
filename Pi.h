@@ -10,7 +10,7 @@
 // 每项约增加 8 位十进制精度，terms = 2~3 即达到 double 精度极限
 // @param terms 求和项数（>= 1）
 // @return π 的 double 近似值
-double calculatePi_Ramanujan(int terms);
+double piRamanujan(int terms);
 
 // Chudnovsky 级数计算 π 的任意位数（1989, 拉马努金类级数, 每项约 14.18 位）
 // 公式：π = 426880·√10005 / Σ (-1)^k·(6k)!·(13591409 + 545140134k) / ((3k)!·(k!)^3·640320^(3k))
@@ -18,7 +18,7 @@ double calculatePi_Ramanujan(int terms);
 // 输出小数点后 digits 位全部为 π 的真实十进制位（逐位正确, 非浮点近似）
 // @param digits 小数点后位数（>= 1）
 // @return 形如 "3.14159..." 的字符串（小数点后 digits 位）
-std::string calculatePi_Chudnovsky(int digits);
+std::string piChudnovsky(int digits);
 
 //////////////////////////////////////////////////////// π 结果文件输出
 
@@ -27,7 +27,7 @@ std::string calculatePi_Chudnovsky(int digits);
 void setPiOutputDirectory(const std::string &dir);
 
 // 将 π 计算结果保存为 Markdown 文件（文件名 = 函数名_参数值_Bits.md）
-// @param filename  文件名, 如 "calculatePi_Chudnovsky_500_Bits.md"
+// @param filename  文件名, 如 "piChudnovsky_500_Bits.md"
 // @param funcName  函数名（写入文件元信息）
 // @param paramDesc 参数描述, 如 "digits = 500"（写入文件元信息）
 // @param result    计算结果字符串

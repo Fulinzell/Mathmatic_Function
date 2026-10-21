@@ -125,11 +125,11 @@ cpp_int isqrtBig(const cpp_int &n)
     公式：1/π = (2√2 / 9801) · Σ_{k=0}^{∞} (4k)!·(1103 + 26390k) / ((k!)^4 · 396^(4k))
     精度：每项约增加 8 位十进制精度；terms = 2~3 即达到 double 精度极限（~15 位）
 */
-double calculatePi_Ramanujan(int terms)
+double piRamanujan(int terms)
 {
     if (terms <= 0)
     {
-        throw std::invalid_argument("calculatePi_Ramanujan: terms must be >= 1.");
+        throw std::invalid_argument("piRamanujan: terms must be >= 1.");
     }
 
     double sum = 0.0;
@@ -158,8 +158,8 @@ double calculatePi_Ramanujan(int terms)
     // 文件输出：执行时将结果写入 函数名_参数值_Bits.md（默认当前目录, 可用 setPiOutputDirectory 指定）
     std::ostringstream oss;
     oss << std::fixed << std::setprecision(17) << pi;
-    savePiResultToFile("calculatePi_Ramanujan_" + std::to_string(terms) + "_Bits.md",
-                       "calculatePi_Ramanujan", "terms = " + std::to_string(terms), oss.str());
+    savePiResultToFile("piRamanujan_" + std::to_string(terms) + "_Bits.md",
+                       "piRamanujan", "terms = " + std::to_string(terms), oss.str());
 
     return pi;
 }
@@ -183,11 +183,11 @@ double calculatePi_Ramanujan(int terms)
       5) 转字符串并插入小数点
     说明：全程整数运算, 输出位即为 π 的真实十进制展开（每一位都是真值）
 */
-std::string calculatePi_Chudnovsky(int digits)
+std::string piChudnovsky(int digits)
 {
     if (digits <= 0)
     {
-        throw std::invalid_argument("calculatePi_Chudnovsky: digits must be >= 1.");
+        throw std::invalid_argument("piChudnovsky: digits must be >= 1.");
     }
 
     // 每项约 14.181647462725477 位；+2 项安全余量
@@ -198,7 +198,7 @@ std::string calculatePi_Chudnovsky(int digits)
     chudnovskyBS(0, terms, P, Q, T);
     if (T < 0)
     {
-        throw std::runtime_error("calculatePi_Chudnovsky: unexpected negative T."); // 防御性检查, 理论上不会发生
+        throw std::runtime_error("piChudnovsky: unexpected negative T."); // 防御性检查, 理论上不会发生
     }
 
     // sqrtC = floor(√(10005 · 10^(2·digits))) ≈ √10005 · 10^digits
@@ -221,8 +221,8 @@ std::string calculatePi_Chudnovsky(int digits)
     std::string piStr = s.substr(0, 1) + "." + s.substr(1, digits);
 
     // 文件输出：执行时将结果写入 函数名_参数值_Bits.md（默认当前目录, 可用 setPiOutputDirectory 指定）
-    savePiResultToFile("calculatePi_Chudnovsky_" + std::to_string(digits) + "_Bits.md",
-                       "calculatePi_Chudnovsky", "digits = " + std::to_string(digits), piStr);
+    savePiResultToFile("piChudnovsky_" + std::to_string(digits) + "_Bits.md",
+                       "piChudnovsky", "digits = " + std::to_string(digits), piStr);
 
     return piStr;
 }

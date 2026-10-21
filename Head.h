@@ -26,4 +26,5 @@
 #include "Mathmatic_Functions.h"
 #include "Matrix.h"
 #include "Pi.h"
+#include "Binary.h"
 

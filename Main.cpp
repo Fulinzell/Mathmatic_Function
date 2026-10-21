@@ -108,5 +108,16 @@ int main()
     // 上述每个 π 函数执行时都会把结果写入当前目录的 *_Bits.md 文件（可用 setPiOutputDirectory 指定输出目录）
     std::cout << "[Info] 各 π 计算结果已写入当前目录下的 *_Bits.md 文件 (setPiOutputDirectory 可指定目录)" << std::endl;
 
+    /* 案例六：----------------------------------------------十进制 → 二进制（字符串拼接通用算法）------------------------------------------------------*/
+
+    // 整数
+    std::cout << "Decimal_To_Binary(\"25\")      = " << Decimal_To_Binary("25") << std::endl;   // 11001
+    std::cout << "Decimal_To_Binary(\"-25\")     = " << Decimal_To_Binary("-25") << std::endl;  // -11001
+    // 小数（精确表示，提前归零自然截断）
+    std::cout << "Decimal_To_Binary(\"0.125\")   = " << Decimal_To_Binary("0.125") << std::endl; // 0.001
+    // 小数（无法精确表示，按精度上限截断并标记）
+    std::cout << "Decimal_To_Binary(\"0.1\")     = " << Decimal_To_Binary("0.1") << std::endl;   // 0.0001100110011…
+    std::cout << "Decimal_To_Binary(\"3.14159\") = " << Decimal_To_Binary("3.14159", 20) << std::endl;
+
     return 0;
 }

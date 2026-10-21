@@ -1,6 +1,6 @@
 # Mathmatic_Function
 
-一个 C++ 数学计算库：解析几何、行列式、任意大整数阶乘、伽马函数、斯特林公式，以及基于 Chudnovsky / Ramanujan 级数的圆周率高精度计算（支持百万位级真值输出）。
+一个 C++ 数学计算库：解析几何、行列式、任意大整数阶乘、伽马函数、斯特林公式、进制转换，以及基于 Chudnovsky / Ramanujan 级数的圆周率高精度计算（支持百万位级真值输出）。附 PyQt5 二进制可视化工具。
 
 ## ✨ 功能特性
 
@@ -13,6 +13,8 @@
 | 斯特林公式 | n! 近似与 ln(n!) | 含高阶修正项，任意 n 不溢出 |
 | 圆周率 π | Ramanujan 级数（double） | 每项约 +8 位，2~3 项达 double 上限 |
 | 圆周率 π | Chudnovsky 级数（高精度） | 每项约 +14.18 位；100 位内用 `cpp_dec_float_100`，任意位数用纯整数 binary splitting，逐位真值 |
+| 进制转换 | 十进制整数/小数 → 二进制 | 全程字符串运算（除 2 取余 + 乘 2 取整），无浮点精度损失 |
+| 可视化工具 | `binary_gui.py`（PyQt5） | 输入数字，二进制结果彩色格子展示，格子带位权提示 |
 | 结果输出 | π 计算结果自动写 Markdown 文件 | `setPiOutputDirectory` 可指定输出目录 |
 
 ## 🚀 快速开始
@@ -40,7 +42,9 @@ Mathmatic_Function/
 ├── Mathmatic_Functions.h/.cpp# 斜率、方向余弦、阶乘、伽马、斯特林、Chudnovsky(double/高精度)
 ├── Matrix.h/.cpp             # 行列式计算与矩阵打印
 ├── Pi.h/.cpp                 # Ramanujan 级数、整数版 Chudnovsky（任意位真值）、结果文件输出
-├── Thread.h                  # 线程/网络相关头文件（预留）
+├── Binary.h/.cpp             # Decimal_To_Binary：十进制→二进制（字符串拼接通用算法）
+├── binary_gui.py             # PyQt5 二进制可视化界面
+├── commit-push.bat           # 一键提交推送脚本（双击即用）
 ├── makefile                  # GCC/Windows 构建脚本
 ├── 函数功能详解.md            # 各函数原理与公式推导
 ├── 调试日志.md               # 开发调试记录
@@ -70,6 +74,18 @@ std::string calculatePi_Chudnovsky(int digits);             // 任意位真值�
 
 // 输出控制
 void setPiOutputDirectory(const std::string &dir);  // 指定 *_Bits.md 输出目录
+
+// 进制转换
+std::string Decimal_To_Binary(const std::string &num,
+                              unsigned int maxFracBits = 52);  // 十进制→二进制，字符串拼接算法，无浮点误差
+```
+
+### Python 可视化工具
+
+```bash
+pip install PyQt5        # 首次使用需安装
+python binary_gui.py     # 启动界面：输入数字 → 二进制结果 + 彩色格子
+```
 ```
 
 ## 🔬 算法说明

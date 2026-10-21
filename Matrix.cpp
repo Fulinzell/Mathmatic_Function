@@ -8,17 +8,17 @@
     计算公式：det(A) = a(ei - fh) - b(di - fg) + c(dh - eg)
     其中，a, b, c, d, e, f, g, h, i 分别是矩阵的元素。
 */
-double determinant(const Matrix3D& Matrix) 
+double calculate_Determinant(const MATRIX3D& Matrix) 
 {
-    double a = Matrix.matrixElem[0][0];
-    double b = Matrix.matrixElem[0][1];
-    double c = Matrix.matrixElem[0][2];
-    double d = Matrix.matrixElem[1][0];
-    double e = Matrix.matrixElem[1][1];
-    double f = Matrix.matrixElem[1][2];
-    double g = Matrix.matrixElem[2][0];
-    double h = Matrix.matrixElem[2][1];
-    double i = Matrix.matrixElem[2][2];
+    double a = Matrix.matrixelem[0][0];
+    double b = Matrix.matrixelem[0][1];
+    double c = Matrix.matrixelem[0][2];
+    double d = Matrix.matrixelem[1][0];
+    double e = Matrix.matrixelem[1][1];
+    double f = Matrix.matrixelem[1][2];
+    double g = Matrix.matrixelem[2][0];
+    double h = Matrix.matrixelem[2][1];
+    double i = Matrix.matrixelem[2][2];
 
     double det = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
     return det;
@@ -30,7 +30,7 @@ double determinant(const Matrix3D& Matrix)
       计算公式：det(A) = a(ei - fh) - b(di - fg) + c(dh - eg)
       其中，a, b, c, d, e, f, g, h, i 分别是矩阵的元素。
 */
-double determinant(const Matrix3DVec& matrix) 
+double calculate_Determinant(const MATRIX_3D& matrix) 
 {
     return matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1]) -
            matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
@@ -45,7 +45,7 @@ double determinant(const Matrix3DVec& matrix)
     功能：格式化输出矩阵，使其易于阅读
     注意：矩阵元素的宽度会根据最大元素长度自动调整
 */
-void printMatrix(const vector<vector<double>>& matrix) 
+void print_Matrix(const vector<vector<double>>& matrix) 
 {
     if (matrix.empty()) return;
 

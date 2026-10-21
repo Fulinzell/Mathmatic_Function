@@ -36,7 +36,7 @@ mingw32-make clean  # 清理目标文件
 Mathmatic_Function/
 ├── Main.cpp                  # 示例程序（全部 API 的使用演示）
 ├── Head.h                    # 统一头文件
-├── Mathmatic_DataType.h      # Point2D / Point3D / Matrix2D / Matrix3D 等类型定义
+├── Mathmatic_DataType.h      # POINT_2D / POINT_3D / MATRIX2D / MATRIX3D 等类型定义
 ├── Mathmatic_Functions.h/.cpp# 斜率、方向余弦、阶乘、伽马、斯特林、Chudnovsky(double/高精度)
 ├── Matrix.h/.cpp             # 行列式计算与矩阵打印
 ├── Pi.h/.cpp                 # Ramanujan 级数、整数版 Chudnovsky（任意位真值）、结果文件输出
@@ -51,22 +51,22 @@ Mathmatic_Function/
 
 ```cpp
 // 解析几何
-double slope(const Point2D &p1, const Point2D &p2);                    // 斜率（两点 x 相同抛异常）
-double arc(const Point2D &p1, const Point2D &p2);                      // 线段弧度
-void   directionCosines(const Point3D &p1, const Point3D &p2,
+double calculateSlope(const POINT_2D &p1, const POINT_2D &p2);                    // 斜率（两点 x 相同抛异常）
+double calculateArc(const POINT_2D &p1, const POINT_2D &p2);                      // 线段弧度
+void   calculateDirectionCosines(const POINT_3D &p1, const POINT_3D &p2,
                                  double &cosA, double &cosB, double &cosG);      // 方向余弦
 
 // 阶乘 / 伽马 / 斯特林
-std::string factorial(unsigned int n);            // 任意大 n 的阶乘，十进制字符串
-double gammaFunction(double x);                  // Γ(x)，0 与负整数为极点（抛异常）
-double stirlingApproximation(unsigned int n);    // n! 近似（n ≤ 170）
-double stirlingLn(unsigned int n);               // ln(n!)，任意 n 不溢出
+std::string Factorial(unsigned int n);            // 任意大 n 的阶乘，十进制字符串
+double Gamma_Function(double x);                  // Γ(x)，0 与负整数为极点（抛异常）
+double Stirling_Approximation(unsigned int n);    // n! 近似（n ≤ 170）
+double Stirling_Ln(unsigned int n);               // ln(n!)，任意 n 不溢出
 
 // 圆周率
-double      chudnovskyPi(unsigned int terms);              // double 精度，每项 +14 位
-std::string chudnovskyPi(unsigned int digits, unsigned int terms = 0);  // 1~100 位，字符串
-double      piRamanujan(int terms);               // double 精度，每项 +8 位
-std::string piChudnovsky(int digits);             // 任意位真值（整数 binary splitting）
+double      Chudnovsky_Pi(unsigned int terms);              // double 精度，每项 +14 位
+std::string Chudnovsky_Pi(unsigned int digits, unsigned int terms = 0);  // 1~100 位，字符串
+double      calculatePi_Ramanujan(int terms);               // double 精度，每项 +8 位
+std::string calculatePi_Chudnovsky(int digits);             // 任意位真值（整数 binary splitting）
 
 // 输出控制
 void setPiOutputDirectory(const std::string &dir);  // 指定 *_Bits.md 输出目录
@@ -88,8 +88,8 @@ void setPiOutputDirectory(const std::string &dir);  // 指定 *_Bits.md 输出�
 ## ⚠️ 已知限制
 
 - 仅支持 Windows / MinGW（`Head.h` 依赖 `windows.h`、`winsock2.h`）。
-- `chudnovskyPi` 高精度版上限 100 位；更多位请用 `piChudnovsky`。
-- 百万位 π 计算涉及大整数除法与开方，耗时以秒~分钟计；示例程序中的 `piChudnovsky(1000000)` 属于压测演示。
+- `Chudnovsky_Pi` 高精度版上限 100 位；更多位请用 `calculatePi_Chudnovsky`。
+- 百万位 π 计算涉及大整数除法与开方，耗时以秒~分钟计；示例程序中的 `calculatePi_Chudnovsky(1000000)` 属于压测演示。
 
 ## 📄 许可
 

@@ -9,20 +9,20 @@
 
 *********************************************************************************************************************************************************/
 // （欧拉几何）计算任意两点所构成的斜率
-double slope(const Point2D &point1, const Point2D &point2)
+double calculateSlope(const POINT_2D &point1, const POINT_2D &point2)
 {
-    if (point2.xPos - point1.xPos == 0)
+    if (point2.X_Pos - point1.X_Pos == 0)
     {
         throw std::invalid_argument("Cannot calculate slope: division by zero.");
     }
-    return (point2.yPos - point1.yPos) / (point2.xPos - point1.xPos);
+    return (point2.Y_Pos - point1.Y_Pos) / (point2.X_Pos - point1.X_Pos);
 }
 
 // 获取任意两点所构成的线段所占的弧度
-double arc(const Point2D &point1, const Point2D &point2)
+double calculateArc(const POINT_2D &point1, const POINT_2D &point2)
 {
-    double k = slope(point1, point2);
-    return atan(k);
+    double slope = calculateSlope(point1, point2);
+    return atan(slope);
 }
 
 /********************************************************************************************************************************************************
@@ -31,12 +31,12 @@ double arc(const Point2D &point1, const Point2D &point2)
 
 *********************************************************************************************************************************************************/
 // 计算任意两点构成线段的方向余弦(三维点坐标)
-void directionCosines(const Point3D &point1, const Point3D &point2, double &cosAlpha, double &cosBeta, double &cosGamma)
+void calculateDirectionCosines(const POINT_3D &point1, const POINT_3D &point2, double &cosAlpha, double &cosBeta, double &cosGamma)
 {
     // 计算方向向量的分量
-    double deltaX = point2.xPos - point1.xPos;
-    double deltaY = point2.yPos - point1.yPos;
-    double deltaZ = point2.zPos - point1.zPos;
+    double deltaX = point2.X_Pos - point1.X_Pos;
+    double deltaY = point2.Y_Pos - point1.Y_Pos;
+    double deltaZ = point2.Z_Pos - point1.Z_Pos;
 
     // 计算方向向量的长度
     double length = std::sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
@@ -69,7 +69,7 @@ static const double PI = 3.14159265358979323846264338327950288;
           从 2 乘到 n，每轮对每一位乘以因子并处理进位，最后逆序拼接为字符串
     复杂度：O(n × 位数) ≈ O(n²) 量级（朴素大数乘法）
 */
-std::string factorial(unsigned int n)
+std::string Factorial(unsigned int n)
 {
     // 0! = 1! = 1
     if (n <= 1)
@@ -116,7 +116,7 @@ std::string factorial(unsigned int n)
     备注：阶乘与伽马的关系 n! = Γ(n + 1)，小数阶乘 x! = Γ(x + 1)，
           如 4.5! = Γ(5.5) ≈ 52.34277778455352
 */
-double gammaFunction(double x)
+double Gamma_Function(double x)
 {
     // 极点检测：0 与负整数处 Γ 发散
     if (x <= 0.0 && std::floor(x) == x)
@@ -127,7 +127,7 @@ double gammaFunction(double x)
     // 反射公式：覆盖 x < 0 的非整数以及 (0, 0.5) 区间（避免 Lanczos 在小值处精度下降）
     if (x < 0.5)
     {
-        return PI / (std::sin(PI * x) * gammaFunction(1.0 - x));
+        return PI / (std::sin(PI * x) * Gamma_Function(1.0 - x));
     }
 
     // Lanczos 近似（g = 7, n = 9，系数来自经典 Lanczos 系数表）
@@ -163,14 +163,14 @@ double gammaFunction(double x)
     公式：n! ≈ √(2πn) · (n/e)^n · (1 + 1/(12n))   —— 含一阶修正项
     备注：n = 0 特判返回 1（0! = 1）；n 越大相对误差越小（~1/(288n²)）
 */
-double stirlingApproximation(unsigned int n)
+double Stirling_Approximation(unsigned int n)
 {
     if (n == 0)
     {
         return 1.0; // 斯特林公式对 0 无定义, 0! = 1 特判
     }
     // 经对数形式计算, 避免中间量 (n/e)^n 先于最终结果溢出
-    return std::exp(stirlingLn(n));
+    return std::exp(Stirling_Ln(n));
 }
 
 // 斯特林公式对数形式 ln(n!)
@@ -180,7 +180,7 @@ double stirlingApproximation(unsigned int n)
     公式：ln(n!) ≈ n·ln(n) − n + 0.5·ln(2πn) + 1/(12n) − 1/(360n³) + 1/(1260n⁵)
     备注：n = 0 返回 ln(1) = 0；n ≥ 10 时相对误差已小于 1e-12 量级
 */
-double stirlingLn(unsigned int n)
+double Stirling_Ln(unsigned int n)
 {
     if (n == 0)
     {
@@ -234,11 +234,11 @@ namespace
     输入：@param terms 累加项数 (≥ 1; 每项约多 14 位正确数字, 2 项即达 double 上限)
     输出：返回 π 的 double 近似值
 */
-double chudnovskyPi(unsigned int terms)
+double Chudnovsky_Pi(unsigned int terms)
 {
     if (terms == 0)
     {
-        throw std::invalid_argument("chudnovskyPi: terms must be at least 1.");
+        throw std::invalid_argument("Chudnovsky_Pi: terms must be at least 1.");
     }
 
     double term = CHUD_A; // T_0
@@ -260,8 +260,8 @@ double chudnovskyPi(unsigned int terms)
     // 文件输出：执行时将结果写入 函数名_参数值_Bits.md（默认当前目录, 可用 setPiOutputDirectory 指定）
     std::ostringstream oss;
     oss << std::fixed << std::setprecision(17) << pi;
-    savePiResultToFile("chudnovskyPi_" + std::to_string(terms) + "_Bits.md",
-                       "chudnovskyPi (double)", "terms = " + std::to_string(terms), oss.str());
+    savePiResultToFile("Chudnovsky_Pi_" + std::to_string(terms) + "_Bits.md",
+                       "Chudnovsky_Pi (double)", "terms = " + std::to_string(terms), oss.str());
 
     return pi;
 }
@@ -273,11 +273,11 @@ double chudnovskyPi(unsigned int terms)
     输出：返回 π 的十进制字符串, 保留 digits 位小数
     内部：使用 boost::multiprecision::cpp_dec_float_100 (101 位十进制有效数字)
 */
-std::string chudnovskyPi(unsigned int digits, unsigned int terms)
+std::string Chudnovsky_Pi(unsigned int digits, unsigned int terms)
 {
     if (digits == 0 || digits > 100)
     {
-        throw std::invalid_argument("chudnovskyPi: digits must be in range 1 ~ 100.");
+        throw std::invalid_argument("Chudnovsky_Pi: digits must be in range 1 ~ 100.");
     }
     if (terms == 0)
     {
@@ -310,8 +310,8 @@ std::string chudnovskyPi(unsigned int digits, unsigned int terms)
     std::string piStr = oss.str();
 
     // 文件输出：执行时将结果写入 函数名_参数值_Bits.md（默认当前目录, 可用 setPiOutputDirectory 指定）
-    savePiResultToFile("chudnovskyPi_" + std::to_string(digits) + "_Bits.md",
-                       "chudnovskyPi (high precision)",
+    savePiResultToFile("Chudnovsky_Pi_" + std::to_string(digits) + "_Bits.md",
+                       "Chudnovsky_Pi (high precision)",
                        "digits = " + std::to_string(digits) + ", terms = " + std::to_string(terms), piStr);
 
     return piStr;
